@@ -1,0 +1,55 @@
+# ----------------------------
+# Maven / Java
+# ----------------------------
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.log
+
+# ----------------------------
+# IntelliJ IDEA
+# ----------------------------
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+*.log
+*.class
+
+# ----------------------------
+# OS Files
+# ----------------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------------
+# Spring Boot / H2
+# ----------------------------
+# H2 database files
+*.h2.db
+*.mv.db
+*.trace.db
+
+# Spring Boot properties override
+application-*.yml
+application-*.properties
+
+# ----------------------------
+# Others
+# ----------------------------
+# Eclipse
+*.classpath
+*.project
+*.settings/
+
+# Logs
+logs/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
