@@ -1,6 +1,8 @@
 package com.wolper.prices.adapters.in.web;
 
 import com.wolper.prices.adapters.in.web.dto.PriceRequest;
+import com.wolper.prices.adapters.in.web.dto.PriceResponse;
+import com.wolper.prices.adapters.in.web.mapper.PriceMapper;
 import com.wolper.prices.core.domain.Price;
 import com.wolper.prices.port.in.GetPriceUseCase;
 import jakarta.validation.Valid;
@@ -20,17 +22,17 @@ public class PriceController {
     private final GetPriceUseCase getPriceUseCase;
 
     @GetMapping("/final")
-    public ResponseEntity<Price> getFinalPrice(@Valid PriceRequest request) {
+    public ResponseEntity<PriceResponse> getFinalPrice(@Valid PriceRequest request) {
 
-        log.info("final called from price controller with request {} ", request);
+        log.debug("final called from price controller with request {} ", request);
         return getPriceUseCase.getPrice(
                         request.getDate(),
                         request.getProductId(),
                         request.getBrandId()
                 )
+                .map(PriceMapper.INSTANCE::toPriceResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
 }
 

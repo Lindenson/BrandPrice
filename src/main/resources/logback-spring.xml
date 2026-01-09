@@ -1,46 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="prices-service"/>
-    <springProperty scope="context" name="LOG_LEVEL_ROOT" source="logging.level.root" defaultValue="INFO"/>
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="price-service"/>
+    <springProperty scope="context" name="LOG_LEVEL_ROOT" source="logging.level.root" defaultValue="DEBUG"/>
 
-    <property name="PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-
-        <file>logs/prices-service.log</file>
-
+        <file>logs/${APP_NAME}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>
-                logs/prices-service.%d{yyyy-MM-dd}.%i.log
-            </fileNamePattern>
-
+            <fileNamePattern>logs/${APP_NAME}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>10MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
-
         </rollingPolicy>
-
         <encoder>
             <pattern>${PATTERN}</pattern>
             <charset>UTF-8</charset>
         </encoder>
-
     </appender>
 
     <root level="${LOG_LEVEL_ROOT}">
         <appender-ref ref="FILE"/>
     </root>
-
-    <logger name="org.springframework" level="INFO"/>
-    <logger name="org.springframework.boot" level="INFO"/>
-
-    <logger name="org.springframework.boot.context.properties" level="DEBUG"/>
-    <logger name="org.springframework.validation" level="DEBUG"/>
-
-    <logger name="org.springframework.web" level="DEBUG"/>
-
-    <logger name="com.wolper.prices" level="DEBUG"/>
 
 </configuration>

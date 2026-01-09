@@ -1,4 +1,4 @@
-package com.wolper.prices;
+package com.wolper.prices.it;
 
 import com.wolper.prices.app.PriceServiceApplication;
 import org.junit.jupiter.api.Test;
