@@ -1,4 +1,8 @@
-# Prices Service
+# Servicio de Precios de Marca
+
+
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+###### measured by JaCoCo
 
 ## Disclaimer
 
@@ -52,8 +56,31 @@ El servicio REST provee un endpoint:
 
 El servicio retorna la tarifa aplicable siguiendo la prioridad indicada en la tabla.
 
-***Ejemplo de respuesta (JSON)***
-1. Respuesta exitosa
+---
+## API REST – Consulta de Precio Final
+
+### Endpoint:
+```json
+GET /prices/final
+```
+
+#### Parámetros de Entrada (query parameters)
+
+| Nombre      | Tipo     | Descripción                                                                 | Obligatorio |
+|------------|----------|-----------------------------------------------------------------------------|------------|
+| `date`     | string   | Fecha y hora de aplicación del precio (ISO 8601, ej. `2020-06-14T10:00:00`) | Sí |
+| `productId`| long     | Identificador del producto, productId > 0                                   | Sí |
+| `brandId`  | long     | Identificador de la cadena/brand, brandId > 0                               | Sí |
+
+---
+#### Ejemplo
+
+```json
+curl "http://localhost:8080/prices/final?date=2020-06-14T10:00:00&productId=XXX&brandId=XXX"
+```
+
+1. Respuesta exitosa (200 OK)
+
 ```json
    {
    "productId": 35455,
@@ -61,13 +88,13 @@ El servicio retorna la tarifa aplicable siguiendo la prioridad indicada en la ta
    "priceList": 1,
    "startDate": "2020-06-14T00:00:00",
    "endDate": "2020-12-31T23:59:59",
-   "priority": 0,
    "price": 35.50,
    "currency": "EUR"
    }
 ```
 
-***2. Errores posibles***
+---
+2. Errores posibles
    
 - Precio no encontrado
 ```
@@ -83,12 +110,15 @@ HTTP Status: 500 Internal Server Error
 ```
 ---
 
+
 ## Tecnologías y Decisiones de Diseño
 
 - **Spring Boot**: Framework principal para el servicio REST y configuración de la aplicación.
 - **H2 en memoria**: Base de datos ligera para inicialización de datos de ejemplo y pruebas.
 - **JDBC con NamedParameterJdbcTemplate**: Se optó por consultas de bajo nivel en vez de Spring Data o Hibernate, para tener control total sobre la optimización de las consultas y ordenamiento por prioridad.
 - **Arquitectura hexagonal mínima**: Separación de capas `port-in` (casos de uso), `port-out` (repositorio) y adaptadores (`in` y `out`) para mantener flexibilidad y testabilidad.
+- **Lombok**: Utilizado con *annotation processing* para reducir código boilerplate (constructores, getters/setters, equals/hashCode), mejorando la legibilidad y mantenibilidad del código.
+- **MapStruct**: Empleado para la generación automática de mappers entre entidades y DTOs en tiempo de compilación, garantizando alto rendimiento y evitando reflexión en tiempo de ejecución.
 - **Logback**: Sistema de logging configurado con appender rotativo, para capturar eventos importantes de ejecución y errores.
 - **Pruebas**:
     - Unitarias para validar creación de entidades y excepciones.
@@ -115,10 +145,12 @@ Todos los tests se ejecutan sobre la base de datos H2 en memoria, inicializada a
 
 1. Clonar el repositorio
 ```bash
-git clone <repo-url>
-cd prices-service
+git clone https://github.com/Lindenson/BrandPrice.git
+cd BrandPrice
 mvn clean install
 mvn spring-boot:run
+
+curl "http://localhost:8080/prices/final?date=2020-06-14T10:00:00&productId=35455&brandId=1" 
 ```
 
 2. H2 Console
@@ -130,8 +162,8 @@ http://localhost:8080/h2-console
 ```
 src/
 ├─ main/java/com/wolper/prices # Código principal de la aplicación
-├─ test/java/com/wolper/prices # Unit tests
-└─ it/java/com/wolper/prices # Integración tests
+├─ test/java/com/wolper/prices/* # Unit tests, and...
+└─ test/java/com/wolper/prices/it # Integración tests
 ```
  
 

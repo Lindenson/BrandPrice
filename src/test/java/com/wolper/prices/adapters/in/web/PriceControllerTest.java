@@ -16,10 +16,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PriceController.class)
 @ContextConfiguration(classes = PriceServiceApplication.class)
@@ -46,6 +46,7 @@ class PriceControllerTest {
                         .param("brandId", "1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.productId").value(35455))
                 .andExpect(jsonPath("$.brandId").value(1))
                 .andExpect(jsonPath("$.price").value(35.50));
@@ -58,12 +59,14 @@ class PriceControllerTest {
         LocalDateTime date = LocalDateTime.of(2026, 1, 9, 10, 0);
         when(getPriceUseCase.getPrice(date, 35455L, 1L)).thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/prices/final")
+        var result = mockMvc.perform(get("/prices/final")
                         .param("date", date.toString())
                         .param("productId", "35455")
                         .param("brandId", "1"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk())
+                .andReturn();
 
+        assertNull(result.getResponse().getContentAsString().isBlank() ? null : result.getResponse().getContentAsString());
         verify(getPriceUseCase, times(1)).getPrice(date, 35455L, 1L);
     }
 

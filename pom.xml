@@ -17,8 +17,10 @@
     <properties>
         <java.version>21</java.version>
         <annotations.version>24.0.0</annotations.version>
-        <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
-        <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
 
         <!-- min coverage % -->
         <jacoco-maven-plugin.minimum>0.80</jacoco-maven-plugin.minimum>
@@ -50,7 +52,11 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -90,6 +96,11 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
@@ -108,20 +119,25 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven-failsafe-plugin.version}</version>
+                <configuration>
+                    <includes>
+                        <include>**/*IT.java</include>
+                    </includes>
+                </configuration>
                 <executions>
                     <execution>
+                        <id>integration-tests</id>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
                         </goals>
-                        <configuration>
-                            <includes>
-                                <include>**/*IT.java</include>
-                                <include>**/*IntegrationTest.java</include>
-                            </includes>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

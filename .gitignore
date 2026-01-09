@@ -16,7 +16,6 @@ target/
 *.iws
 *.iml
 *.ipr
-out/
 *.log
 *.class
 
