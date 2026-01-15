@@ -4,5 +4,5 @@
  / ____/ /  / / /__/  __(__  )   ___/ /  __/ /   | |/ / / /__/  __/
 /_/   /_/  /_/\___/\___/____/   /____/\___/_/    |___/_/\___/\___/
 
-${spring.application.name} ${spring.application.version}
+${spring.application.name}
 Powered by Spring Boot ${spring-boot.version}

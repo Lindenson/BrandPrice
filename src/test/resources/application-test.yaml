@@ -10,14 +10,7 @@ spring:
       mode: always
       platform: h2
 
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-
-
 logging:
   level:
     root: INFO
     org.springframework: DEBUG
-
