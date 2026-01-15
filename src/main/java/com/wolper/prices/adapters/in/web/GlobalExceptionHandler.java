@@ -31,14 +31,6 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
-        Map<String, String> fields = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(err -> fields.put(err.getField(), err.getDefaultMessage()));
-        log.warn("Validation errors: {}", fields);
-        return ResponseEntity.badRequest().body(buildErrorResponse(HttpStatus.BAD_REQUEST, "Validation failed", fields));
-    }
-
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex) {
         Map<String, String> fields = new HashMap<>();
