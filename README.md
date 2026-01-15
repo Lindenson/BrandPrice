@@ -89,7 +89,7 @@ curl "http://localhost:8080/prices/final?date=2020-06-14T10:00:00&productId=XXX&
    "startDate": "2020-06-14T00:00:00",
    "endDate": "2020-12-31T23:59:59",
    "price": 35.50,
-   "currency": "EUR"
+   "curr": "EUR"
    }
 ```
 
@@ -98,11 +98,23 @@ curl "http://localhost:8080/prices/final?date=2020-06-14T10:00:00&productId=XXX&
    
 - Precio no encontrado
 ```
-HTTP Status: 404 Not Found
+HTTP Status: 200 OK, body: null
 ```
 - Parámetro inválido
 ```
 HTTP Status: 400 Bad Request
+```
+#### Ejemplo:
+```json
+{
+  "error": "Bad Request",
+  "fields": {
+      "productId": "must be greater than or equal to 0"
+  },
+  "message": "Constraint violation",
+  "status": 400,
+  "timestamp": "2026-01-15T11:41:04Z"
+}
 ```
 - Error de base de datos / interno
 ```
@@ -110,7 +122,11 @@ HTTP Status: 500 Internal Server Error
 ```
 ---
 
+## Headers de respuesta
+- Cache-Control: no-cache
+- X-Request-ID: <ID único por request>
 
+---
 ## Tecnologías y Decisiones de Diseño
 
 - **Spring Boot**: Framework principal para el servicio REST y configuración de la aplicación.
